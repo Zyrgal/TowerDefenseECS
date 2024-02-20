@@ -1,15 +1,18 @@
 using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
 
-public class SpawnerMono : MonoBehaviour
+public class SpawnerAuthoring : MonoBehaviour
 {
     public int NumberEnnemieToSpawn;
     public GameObject EnemiePrefab;
+    [HideInInspector] public float3 spawnerPosition;
+    public float EnemieSpawnRate;
 }
 
-public class SpawnerMonoBaker : Baker<SpawnerMono>
+public class SpawnerMonoBaker : Baker<SpawnerAuthoring>
 {
-    public override void Bake(SpawnerMono authoring)
+    public override void Bake(SpawnerAuthoring authoring)
     {
         if (authoring.EnemiePrefab == null)
         {
@@ -21,7 +24,8 @@ public class SpawnerMonoBaker : Baker<SpawnerMono>
         AddComponent(entity, new SpawnerProperties
         {
             EnemiePrefab = GetEntity(authoring.EnemiePrefab,TransformUsageFlags.Dynamic),
-            NumberEnnemieToSpawn = authoring.NumberEnnemieToSpawn
+            NumberEnnemieToSpawn = authoring.NumberEnnemieToSpawn,
+            EnemieSpawnRate = authoring.EnemieSpawnRate,
         });
     }
 }
